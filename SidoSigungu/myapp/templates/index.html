@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Django, MySQL, Ajax, jQuery, Python Example</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<!-- Custom Theme files -->
+<link href="/static/css/style.css" rel='stylesheet' type='text/css' />
+<link href='http://fonts.googleapis.com/css?family=Grand+Hotel:400'
+	rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto'
+	rel='stylesheet:100,300,400,500,600,700,800,900' type='text/css'>
+<script>
+	$(function() {
+		getSido();
+	});
+
+	// 시도코드가져오기
+	function getSido(sido) {
+		$.ajax({
+			type : "GET",
+			url : "/getSido",
+			dataType : 'json',
+			cache : "false",
+			data : {
+				sido : sido
+			},
+			success : function(json) {
+				var $el = $("#sido");
+				$el.empty(); // remove old options
+				$el.append($("<option></option>").attr("value", '').text(
+						'시도를 선택하세요'));
+				$.each(json, function(key, value) {
+					$el.append($("<option></option>").attr("value", value.code)
+							.text(value.sido));
+				});
+			}
+		});
+	}
+	// 시군구코드가져오기
+	function getSigungu(sido) {
+		$.ajax({
+			type : "GET",
+			url : "/getSigungu",
+			dataType : 'json',
+			cache : "false",
+			data : {
+				sido : sido
+			},
+			success : function(json) {
+				var $el = $("#sigungu");
+				$el.empty(); // remove old options
+				$el.append($("<option></option>").attr("value", '').text(
+						'시군구를 선택하세요'));
+				$.each(json, function(key, value) {
+					$el.append($("<option></option>").attr("value", value.code)
+							.text(value.sido));
+				});
+			}
+		});
+	}
+</script>
+<!----font-Awesome----->
+<link rel="stylesheet" href="/static/fonts/css/font-awesome.min.css">
+<!----font-Awesome----->
+</head>
+<body>
+	<div class="banner_desc">
+		<div class="container">
+			<h1>Django, MySQL, Ajax, jQuery, Python Example</h1>
+			<h2>장고, 마이에스큐엘, 에이잭스, 제이쿼리, 파이썬 샘플</h2>
+		</div>
+		<div class="details">
+			<div class="container">
+				<div class="col-xs-10 dropdown-buttons">
+					<div class="col-xs-6 dropdown-button">
+						<div class="section_room">
+							<select id="sido" onchange="getSigungu(this.value)"
+								class="frm-field required">
+							</select>
+						</div>
+					</div>
+					<div class="col-xs-6 dropdown-button">
+						<div class="section_room">
+							<select id="sigungu" class="frm-field required">
+							<option value="null">시군구를 선택하세요.</option></select>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-2 submit_button">
+					<form>
+						<input type="submit" value="검색">
+					</form>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
